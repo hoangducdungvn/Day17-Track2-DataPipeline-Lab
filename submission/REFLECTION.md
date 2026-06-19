@@ -19,4 +19,7 @@ Answer briefly, in your own words. This is graded on reasoning, not length.
    answers well that flat chunk retrieval (`embed.py`) would struggle with, and
    one where the graph is overkill.
 
-_Write your answers below._
+1. **The flywheel:** The decontamination step breaks most silently. If it fails, training data leaks into the eval set without throwing any loud errors. We can detect this by adding a pipeline test that measures n-gram or embedding similarity between the final train and eval sets.
+2. **Decontamination:** Skipping this causes the model to memorize the test set. The metrics would "lie" by showing artificially high win-rates or accuracy during evaluation, giving false confidence while real-world performance on unseen user queries remains poor.
+3. **Point-in-time:** In a credit card fraud detection system, joining the "current account balance" instead of the balance *exactly at the transaction time* would leak future information (e.g., the balance dropping due to the fraud itself), making the model useless in production.
+4. **Graph vs vector:** A knowledge graph excels at multi-hop reasoning across scattered facts, e.g., "Which warehouse stores items that have a 30-day warranty?". However, it is overkill for simple, localized fact lookups like "What is the support email?", where flat vector retrieval is cheaper and faster.
